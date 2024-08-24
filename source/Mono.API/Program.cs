@@ -3,6 +3,7 @@
 // </copyright>
 
 using System.Diagnostics.CodeAnalysis;
+using Serilog;
 
 namespace Mono.API
 {
@@ -23,8 +24,11 @@ namespace Mono.API
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddSerilog();
 
             var app = builder.Build();
+
+            app.UseSerilogRequestLogging();
 
             if (app.Environment.IsDevelopment())
             {

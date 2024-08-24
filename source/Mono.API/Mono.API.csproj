@@ -2,7 +2,8 @@
 
   <ItemGroup>
     <PackageReference Include="AspNetCoreAnalyzers" Version="0.3.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.7.1" />
+    <PackageReference Include="Serilog.AspNetCore" Version="8.0.2" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.7.2" />
   </ItemGroup>
 
 </Project>
