@@ -37,7 +37,7 @@ jobs:
         run: dotnet publish --no-restore --no-build -c Release source/Mono.API/Mono.API.csproj /p:EnvironmentName=Development --property:PublishDir=${{ env.PACKAGE_PATH }}
 
       - name: Deploy
-        uses: azure/webapps-deploy@v2
+        uses: azure/webapps-deploy@v3
         env:
           PUBLISH_PROFILE: ${{ secrets.AZURE_PUBLISH_PROFILE }}
         with:
