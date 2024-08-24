@@ -34,7 +34,7 @@ jobs:
         run: dotnet test --no-build --verbosity normal -c Release /p:CollectCoverage=true /p:Threshold=100 /p:ThresholdType=branch
 
       - name: Publish
-        run: dotnet publish --no-restore --no-build -c Release -o ${{ env.PACKAGE_PATH }}
+        run: dotnet publish --no-restore --no-build -c Release source/Mono.API/Mono.API.csproj /p:EnvironmentName=Development --property:PublishDir=${{ env.PACKAGE_PATH }}
 
       - name: Deploy
         uses: azure/webapps-deploy@v2
