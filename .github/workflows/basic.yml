@@ -1,8 +1,9 @@
-name: master
+name: Basic Build & Test
 
 on:
   push:
-    branches: [master]
+    branches-ignore:
+      - master
 
 jobs:
   build:
