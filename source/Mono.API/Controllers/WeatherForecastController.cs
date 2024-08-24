@@ -8,7 +8,7 @@ namespace Mono.API.Controllers
 {
     /// <inheritdoc />
     [ApiController]
-    [Route("[controller]")]
+    [Route("weather")]
     public class WeatherForecastController : ControllerBase
     {
         private static readonly string[] Summaries = new[]
@@ -20,7 +20,7 @@ namespace Mono.API.Controllers
         /// Gets a weather forecast.
         /// </summary>
         /// <returns>An <see cref="IActionResult"/>.</returns>
-        [HttpGet(Name = "GetWeatherForecast")]
+        [HttpGet(Name = "forecast")]
         [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
         public IActionResult Get()
         {
