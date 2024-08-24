@@ -7,10 +7,10 @@ on:
 env:
   PACKAGE_PATH: './app-package'
   APP_NAME: app-mono-dev
-  PUBLISH_PROFILE: ''
 
 jobs:
   build:
+    environment: development
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -34,12 +34,12 @@ jobs:
         run: dotnet test --no-build --verbosity normal -c Release /p:CollectCoverage=true /p:Threshold=100 /p:ThresholdType=branch
 
       - name: Publish
-        run: dotnet publish -c Release -o ${{ env.PACKAGE_PATH }}
+        run: dotnet publish --no-restore --no-build -c Release -o ${{ env.PACKAGE_PATH }}
 
       - name: Deploy
         uses: azure/webapps-deploy@v2
         env:
-          development: ${{ secrets.AZURE_PUBLISH_PROFILE }}
+          PUBLISH_PROFILE: ${{ secrets.AZURE_PUBLISH_PROFILE }}
         with:
           app-name: ${{ env.APP_NAME }}
           publish-profile: ${{ env.PUBLISH_PROFILE }}
