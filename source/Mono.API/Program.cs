@@ -2,11 +2,14 @@
 // Copyright (c) Whistler Parks &amp; Resorts LLC. All rights reserved.
 // </copyright>
 
+using System.Diagnostics.CodeAnalysis;
+
 namespace Mono.API
 {
     /// <summary>
     /// Entry program.
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public class Program
     {
         /// <summary>

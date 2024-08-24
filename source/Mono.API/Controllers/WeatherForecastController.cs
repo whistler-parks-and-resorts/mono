@@ -21,6 +21,7 @@ namespace Mono.API.Controllers
         /// </summary>
         /// <returns>An <see cref="IActionResult"/>.</returns>
         [HttpGet(Name = "GetWeatherForecast")]
+        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
         public IActionResult Get()
         {
             return Ok(Summaries[new Random().Next(0, Summaries.Length - 1)]);
