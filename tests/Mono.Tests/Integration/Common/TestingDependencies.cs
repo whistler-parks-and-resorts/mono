@@ -4,7 +4,6 @@
 
 using MediatorBuddy;
 using MediatR;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Mono.Infrastructure.DataAccess.Common;
 using Mono.Infrastructure.Dependencies;
@@ -46,16 +45,7 @@ namespace Mono.Tests.Integration.Common
             var testConnectionString = Environment.GetEnvironmentVariable("TEST_CONNECTION_STRING") ??
                 "Server=.\\SQLExpress;Database=mono-local-sql;Trusted_Connection=true;MultipleActiveResultSets=true;Integrated Security=True;TrustServerCertificate=true;";
 
-            var inMemoryCollection = new List<KeyValuePair<string, string?>>
-            {
-               new KeyValuePair<string, string?>("ConnectionStrings:Database", testConnectionString),
-            };
-
-            var configuration = new ConfigurationBuilder()
-                .AddInMemoryCollection(inMemoryCollection)
-                .Build();
-
-            collection.AddDependencies(configuration);
+            collection.AddDependencies(testConnectionString);
 
             return collection.BuildServiceProvider();
         }

@@ -20,14 +20,17 @@ namespace Mono.API
         /// Entry point for the application.
         /// </summary>
         /// <param name="args">A <see cref="IEnumerable{T}"/> of command line arguments.</param>
-        public static void Main(string[] args)
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            var connectionString = await SecretsFinder.GetConnectionString(builder.Configuration);
 
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-            builder.Services.AddDependencies(builder.Configuration);
+            builder.Services.AddDependencies(connectionString);
             builder.Services.AddMediatorBuddy(configuration => configuration.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
             builder.Services.AddSerilog((services, configureLogger) => configureLogger
                     .ReadFrom.Configuration(builder.Configuration)
@@ -49,7 +52,7 @@ namespace Mono.API
 
             app.MapControllers();
 
-            app.Run();
+            await app.RunAsync();
         }
     }
 }
