@@ -28,4 +28,9 @@
     <Using Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Unit\API\" />
+    <Folder Include="Unit\Application\" />
+  </ItemGroup>
+
 </Project>
