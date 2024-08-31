@@ -2,6 +2,7 @@
 // Copyright (c) Whistler Parks &amp; Resorts LLC. All rights reserved.
 // </copyright>
 
+using System.Diagnostics.CodeAnalysis;
 using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
 using Microsoft.Extensions.Configuration;
@@ -11,6 +12,7 @@ namespace Mono.Infrastructure.Dependencies
     /// <summary>
     /// Retrieves secrets from a key vault.
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public static class SecretsFinder
     {
         /// <summary>
