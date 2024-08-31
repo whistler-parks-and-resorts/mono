@@ -5,19 +5,36 @@
 using MediatorBuddy;
 using Mono.Application.Attractions.Common;
 using Mono.Contracts.Attractions.GetStatus;
-using Mono.Domain.Attractions;
 
 namespace Mono.Application.Attractions.GetStatus
 {
     /// <inheritdoc />
     public class GetAttractionStatusHandler : EnvelopeHandler<GetAttractionStatusRequest, GetAttractionStatusResponse>
     {
-        /// <inheritdoc/>
-        public override Task<IEnvelope<GetAttractionStatusResponse>> Handle(GetAttractionStatusRequest request, CancellationToken cancellationToken)
-        {
-            var response = AttractionsFactory.GetAttractionStatusResponse(new Attraction());
+        private readonly IAttractionRepository _attractionRepository;
 
-            return Task.FromResult(Success(response));
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GetAttractionStatusHandler"/> class.
+        /// </summary>
+        /// <param name="attractionRepository">An instance of the <see cref="IAttractionRepository"/> interface.</param>
+        public GetAttractionStatusHandler(IAttractionRepository attractionRepository)
+        {
+            _attractionRepository = attractionRepository;
+        }
+
+        /// <inheritdoc/>
+        public override async Task<IEnvelope<GetAttractionStatusResponse>> Handle(GetAttractionStatusRequest request, CancellationToken cancellationToken)
+        {
+            var attraction = await _attractionRepository.GetById(request.Id, cancellationToken);
+
+            if (attraction == null)
+            {
+                return EntityWasNotFound();
+            }
+
+            var response = AttractionsFactory.GetAttractionStatusResponse(attraction);
+
+            return Success(response);
         }
     }
 }

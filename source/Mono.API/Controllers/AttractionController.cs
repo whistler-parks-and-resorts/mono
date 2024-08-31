@@ -28,12 +28,13 @@ namespace Mono.API.Controllers
         /// Queries for the current status of an attraction using an identifier.
         /// </summary>
         /// <param name="id">The attraction identifier.</param>
+        /// <param name="cancellationToken">A <see cref="CancellationToken"/>.</param>
         /// <returns>An <see cref="IActionResult"/>.</returns>
         [HttpGet("{id:guid}/status", Name = "GetStatus")]
         [ProducesResponseType(typeof(GetAttractionStatusResponse), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetStatus(Guid id)
+        public async Task<IActionResult> GetStatus(Guid id, CancellationToken cancellationToken)
         {
-            return await ExecuteRequest(new GetAttractionStatusRequest(), ResponseOptions.OkObjectResponse<GetAttractionStatusResponse>());
+            return await ExecuteRequest(new GetAttractionStatusRequest(id), ResponseOptions.OkObjectResponse<GetAttractionStatusResponse>(), cancellationToken);
         }
     }
 }

@@ -27,7 +27,7 @@ namespace Mono.API
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-            builder.Services.AddDependencies();
+            builder.Services.AddDependencies(builder.Configuration);
             builder.Services.AddMediatorBuddy(configuration => configuration.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
             builder.Services.AddSerilog((services, configureLogger) => configureLogger
                     .ReadFrom.Configuration(builder.Configuration)
@@ -37,7 +37,7 @@ namespace Mono.API
 
             app.UseSerilogRequestLogging();
 
-            if (app.Environment.IsDevelopment())
+            if (!app.Environment.IsProduction())
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
