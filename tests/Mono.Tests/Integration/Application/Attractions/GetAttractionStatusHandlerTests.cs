@@ -2,27 +2,16 @@
 // Copyright (c) Whistler Parks &amp; Resorts LLC. All rights reserved.
 // </copyright>
 
-using Mono.Application.Attractions.GetStatus;
 using Mono.Contracts.Attractions.GetStatus;
+using Mono.Domain.Attractions;
+using Mono.Tests.Integration.Common;
 
 namespace Mono.Tests.Integration.Application.Attractions
 {
-    /// <summary>
-    /// Tests for the <see cref="GetAttractionStatusHandler"/> class.
-    /// </summary>
+    /// <inheritdoc />
     [TestClass]
-    public class GetAttractionStatusHandlerTests
+    public class GetAttractionStatusHandlerTests : BaseIntegrationTest
     {
-        private readonly GetAttractionStatusHandler _handler;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GetAttractionStatusHandlerTests"/> class.
-        /// </summary>
-        public GetAttractionStatusHandlerTests()
-        {
-            _handler = new GetAttractionStatusHandler();
-        }
-
         /// <summary>
         /// Handler has correct default behavior.
         /// </summary>
@@ -30,7 +19,17 @@ namespace Mono.Tests.Integration.Application.Attractions
         [TestMethod]
         public async Task Handle_BehavesCorrectly()
         {
-            var result = await _handler.Handle(new GetAttractionStatusRequest(), CancellationToken.None);
+            var context = TestingDependencies.GetApplicationContext();
+
+            var id = Guid.NewGuid();
+
+            await context.Attractions.AddAsync(new Attraction(id));
+
+            await context.SaveChangesAsync();
+
+            var result = await TestingDependencies
+                .GetHandler<GetAttractionStatusRequest, GetAttractionStatusResponse>()
+                .Handle(new GetAttractionStatusRequest(id), CancellationToken.None);
 
             Assert.IsNotNull(result.Response);
         }

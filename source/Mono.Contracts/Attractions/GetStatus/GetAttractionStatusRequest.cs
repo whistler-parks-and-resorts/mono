@@ -3,11 +3,22 @@
 // </copyright>
 
 using MediatorBuddy;
+using Mono.Contracts.Common.Requests;
 
 namespace Mono.Contracts.Attractions.GetStatus
 {
-    /// <inheritdoc />
-    public class GetAttractionStatusRequest : IEnvelopeRequest<GetAttractionStatusResponse>
+    /// <summary>
+    /// A request for an attraction status.
+    /// </summary>
+    public class GetAttractionStatusRequest : BaseEntityRequest, IEnvelopeRequest<GetAttractionStatusResponse>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GetAttractionStatusRequest"/> class.
+        /// </summary>
+        /// <param name="id">The request identifier.</param>
+        public GetAttractionStatusRequest(Guid id)
+            : base(id)
+        {
+        }
     }
 }
