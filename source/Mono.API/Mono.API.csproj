@@ -2,8 +2,13 @@
 
   <ItemGroup>
     <PackageReference Include="AspNetCoreAnalyzers" Version="0.3.0" />
+    <PackageReference Include="MediatorBuddy.AspNet" Version="0.9.3" />
     <PackageReference Include="Serilog.AspNetCore" Version="8.0.2" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.7.2" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.7.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Mono.Infrastructure\Mono.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

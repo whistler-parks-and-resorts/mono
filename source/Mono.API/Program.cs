@@ -3,6 +3,9 @@
 // </copyright>
 
 using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
+using MediatorBuddy.AspNet.Registration;
+using Mono.Infrastructure.Dependencies;
 using Serilog;
 
 namespace Mono.API
@@ -24,7 +27,12 @@ namespace Mono.API
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-            builder.Services.AddSerilog();
+            builder.Services.AddDependencies();
+            builder.Services.AddMediatorBuddy(configuration => configuration.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+            builder.Services
+                .AddSerilog((services, configureLogger) => configureLogger
+                    .ReadFrom.Configuration(builder.Configuration)
+                    .ReadFrom.Services(services));
 
             var app = builder.Build();
 
