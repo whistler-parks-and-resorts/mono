@@ -29,8 +29,7 @@ namespace Mono.API
             builder.Services.AddSwaggerGen();
             builder.Services.AddDependencies();
             builder.Services.AddMediatorBuddy(configuration => configuration.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
-            builder.Services
-                .AddSerilog((services, configureLogger) => configureLogger
+            builder.Services.AddSerilog((services, configureLogger) => configureLogger
                     .ReadFrom.Configuration(builder.Configuration)
                     .ReadFrom.Services(services));
 

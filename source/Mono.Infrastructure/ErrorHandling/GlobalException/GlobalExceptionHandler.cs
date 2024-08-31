@@ -4,20 +4,20 @@
 
 using MediatorBuddy;
 using MediatR;
-using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace Mono.Infrastructure.ErrorHandling.GlobalException
 {
     /// <inheritdoc />
     public class GlobalExceptionHandler : INotificationHandler<GlobalExceptionOccurred>
     {
-        private readonly ILogger<GlobalExceptionHandler> _logger;
+        private readonly ILogger _logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GlobalExceptionHandler"/> class.
         /// </summary>
-        /// <param name="logger">An instance of the <see cref="ILogger{T}"/> interface.</param>
-        public GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger)
+        /// <param name="logger">An instance of the <see cref="ILogger"/> interface.</param>
+        public GlobalExceptionHandler(ILogger logger)
         {
             _logger = logger;
         }
@@ -25,7 +25,7 @@ namespace Mono.Infrastructure.ErrorHandling.GlobalException
         /// <inheritdoc />
         public Task Handle(GlobalExceptionOccurred notification, CancellationToken cancellationToken)
         {
-            _logger.LogError(notification.Exception, "A global exception occurred at: {dateTime}", notification.DateTime);
+            _logger.Error(notification.Exception, "A global exception occurred at: {dateTime}", notification.DateTime);
 
             return Task.CompletedTask;
         }
