@@ -3,7 +3,7 @@
 // </copyright>
 
 using Mono.Contracts.Attractions.GetStatus;
-using Mono.Domain.Attractions;
+using Mono.Tests.Common;
 using Mono.Tests.Integration.Common;
 
 namespace Mono.Tests.Integration.Application.Attractions
@@ -23,7 +23,7 @@ namespace Mono.Tests.Integration.Application.Attractions
 
             var id = Guid.NewGuid();
 
-            await context.Attractions.AddAsync(new Attraction(id));
+            await context.Attractions.AddAsync(ValidEntities.Attraction(id));
 
             await context.SaveChangesAsync();
 
