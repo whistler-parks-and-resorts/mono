@@ -2,9 +2,6 @@
 // Copyright (c) Whistler Parks &amp; Resorts LLC. All rights reserved.
 // </copyright>
 
-using System.Diagnostics.CodeAnalysis;
-using Azure.Identity;
-using Azure.Security.KeyVault.Secrets;
 using Microsoft.Extensions.Configuration;
 
 namespace Mono.Infrastructure.Dependencies
@@ -12,26 +9,26 @@ namespace Mono.Infrastructure.Dependencies
     /// <summary>
     /// Retrieves secrets from a key vault.
     /// </summary>
-    [ExcludeFromCodeCoverage]
     public static class SecretsFinder
     {
         /// <summary>
         /// Finds the persistence connection string.
         /// </summary>
         /// <param name="configuration">An instance of the <see cref="IConfiguration"/> interface.</param>
+        /// <param name="manager">An instance of the <see cref="ISecretsManager"/> interface.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        public static async Task<string> GetConnectionString(IConfiguration configuration)
+        public static async Task<string> GetConnectionString(IConfiguration configuration, ISecretsManager manager)
         {
-            var client = new SecretClient(new Uri(configuration["Secrets:Vault"] ?? string.Empty), new DefaultAzureCredential());
+            var vaultName = configuration["Secrets:Vault"];
 
-            var response = await client.GetSecretAsync(configuration["Secrets:ConnectionString"]);
-
-            if (response.HasValue)
+            if (vaultName == string.Empty)
             {
-                return response.Value.Value;
+                return configuration["Secrets:ConnectionString"] ?? throw new NullReferenceException("The local connection string could not be found.");
             }
 
-            throw new NullReferenceException("The secret for the connection string was not found.");
+            return await manager.GetSecretAsync(
+                vaultName ?? throw new NullReferenceException("Vault name was null."),
+                configuration["Secrets:ConnectionString"] ?? throw new NullReferenceException("Connection string was null."));
         }
     }
 }

@@ -25,7 +25,7 @@ namespace Mono.API
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            var connectionString = await SecretsFinder.GetConnectionString(builder.Configuration);
+            var connectionString = await SecretsFinder.GetConnectionString(builder.Configuration, new SecretsManager());
 
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
@@ -45,6 +45,8 @@ namespace Mono.API
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+
+            app.UseCors(policyBuilder => policyBuilder.WithOrigins(builder.Configuration["CorsOrigin"] ?? string.Empty));
 
             app.UseHttpsRedirection();
 
