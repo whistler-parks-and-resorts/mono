@@ -3,6 +3,7 @@
 // </copyright>
 
 using Mono.Domain.Attractions;
+using Mono.Tests.Common;
 
 namespace Mono.Tests.Unit.Domain.Attractions
 {
@@ -18,7 +19,7 @@ namespace Mono.Tests.Unit.Domain.Attractions
         [TestMethod]
         public void Attraction_HasDefaultStatus()
         {
-            var attraction = new Attraction();
+            var attraction = ValidEntities.Attraction(Guid.NewGuid());
 
             Assert.AreEqual(AttractionStatus.Open, attraction.Status);
         }

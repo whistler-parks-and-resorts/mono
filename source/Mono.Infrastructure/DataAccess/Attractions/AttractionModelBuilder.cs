@@ -15,11 +15,7 @@ namespace Mono.Infrastructure.DataAccess.Attractions
         public void Configure(EntityTypeBuilder<Attraction> builder)
         {
             builder.HasKey(attraction => attraction.Id);
-
-            builder.HasData(new List<Attraction>
-            {
-                new Attraction(Guid.Parse("9c9651e1-9e9a-499a-9076-a12c41a7d264")),
-            });
+            builder.Property(attraction => attraction.Name);
         }
     }
 }

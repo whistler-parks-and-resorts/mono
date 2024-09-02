@@ -6,6 +6,7 @@ using MediatorBuddy.AspNet;
 using MediatorBuddy.AspNet.Responses;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Mono.Contracts.Attractions.Add;
 using Mono.Contracts.Attractions.GetStatus;
 
 namespace Mono.API.Controllers
@@ -22,6 +23,22 @@ namespace Mono.API.Controllers
         public AttractionController(IMediator mediator)
             : base(mediator)
         {
+        }
+
+        /// <summary>
+        /// Adds a new attraction to the administration system.
+        /// </summary>
+        /// <param name="request">A <see cref="AddAttractionRequest"/> object.</param>
+        /// <param name="cancellationToken">A <see cref="CancellationToken"/>.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        [HttpPost("", Name = "AddAttraction")]
+        [ProducesResponseType(typeof(AddAttractionResponse), StatusCodes.Status201Created)]
+        public async Task<IActionResult> AddAttraction(AddAttractionRequest request, CancellationToken cancellationToken)
+        {
+            return await ExecuteRequest(
+                request,
+                ResponseOptions.CreatedResponse<AddAttractionResponse>(response => new Uri($"attraction/{response.Id}/status", UriKind.Relative)),
+                cancellationToken);
         }
 
         /// <summary>

@@ -3,6 +3,7 @@
 // </copyright>
 
 using ClearDomain.GuidPrimary;
+using FluentValidation;
 
 namespace Mono.Domain.Attractions
 {
@@ -13,15 +14,21 @@ namespace Mono.Domain.Attractions
         /// Initializes a new instance of the <see cref="Attraction"/> class.
         /// </summary>
         /// <param name="id">The attraction identifier.</param>
-        public Attraction(Guid id)
+        /// <param name="name">The attraction name.</param>
+        public Attraction(Guid id, string name)
             : base(id)
         {
+            Name = name;
+
+            new AttractionValidator().ValidateAndThrow(this);
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Attraction"/> class.
         /// </summary>
-        public Attraction()
+        /// <param name="name">The name of the attraction.</param>
+        public Attraction(string name)
+            : this(Guid.NewGuid(), name)
         {
         }
 
@@ -29,5 +36,10 @@ namespace Mono.Domain.Attractions
         /// Gets the current attraction status.
         /// </summary>
         public AttractionStatus Status { get; } = AttractionStatus.Open;
+
+        /// <summary>
+        /// Gets the attraction name.
+        /// </summary>
+        public string Name { get; }
     }
 }

@@ -5,7 +5,7 @@
 using Mono.Application.Attractions.Common;
 using Mono.Application.Attractions.GetStatus;
 using Mono.Contracts.Attractions.GetStatus;
-using Mono.Domain.Attractions;
+using Mono.Tests.Common;
 using Moq;
 
 namespace Mono.Tests.Unit.Application.Attractions
@@ -51,7 +51,7 @@ namespace Mono.Tests.Unit.Application.Attractions
         public async Task Handle_AttractionFound_ReturnsCorrectResponse()
         {
             _attractionRepository.Setup(x => x.GetById(It.IsAny<Guid>(), CancellationToken.None))
-                .ReturnsAsync(new Attraction());
+                .ReturnsAsync(ValidEntities.Attraction(Guid.NewGuid()));
 
             var result = await _handler.Handle(new GetAttractionStatusRequest(Guid.NewGuid()), CancellationToken.None);
 
