@@ -12,8 +12,9 @@ namespace Mono.Infrastructure.DataAccess.Common
     /// Base class for all repositories.
     /// </summary>
     /// <typeparam name="TRoot">The type of the aggregate root.</typeparam>
-    public abstract class BaseRepository<TRoot>
-        : IAddEntity<TRoot>
+    public abstract class BaseRepository<TRoot> :
+        IAddEntity<TRoot>,
+        IGetById<TRoot>
     where TRoot : class, IAggregateRoot
     {
         private readonly DbContext _dbContext;
@@ -33,6 +34,12 @@ namespace Mono.Infrastructure.DataAccess.Common
             await _dbContext.Set<TRoot>().AddAsync(aggregateRoot, cancellationToken);
 
             return await _dbContext.SaveChangesAsync(cancellationToken);
+        }
+
+        /// <inheritdoc/>
+        public async Task<TRoot?> GetById(Guid id, CancellationToken cancellationToken = default)
+        {
+            return await _dbContext.Set<TRoot>().FirstOrDefaultAsync(aggregateRoot => aggregateRoot.Id == id, cancellationToken: cancellationToken);
         }
     }
 }

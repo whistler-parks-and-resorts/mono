@@ -5,35 +5,22 @@
 using Microsoft.EntityFrameworkCore;
 using Mono.Application.Attractions.Common;
 using Mono.Domain.Attractions;
+using Mono.Infrastructure.DataAccess.Common;
 
 namespace Mono.Infrastructure.DataAccess.Attractions
 {
-    /// <inheritdoc />
-    public class AttractionRepository : IAttractionRepository
+    /// <summary>
+    /// Concrete persistence class for <see cref="Attraction"/>.
+    /// </summary>
+    public class AttractionRepository : BaseRepository<Attraction>, IAttractionRepository
     {
-        private readonly DbContext _dbContext;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="AttractionRepository"/> class.
         /// </summary>
         /// <param name="dbContext">An instance of the <see cref="DbContext"/> class.</param>
         public AttractionRepository(DbContext dbContext)
+            : base(dbContext)
         {
-            _dbContext = dbContext;
-        }
-
-        /// <inheritdoc/>
-        public async Task<Attraction?> GetById(Guid id, CancellationToken cancellationToken = default)
-        {
-            return await _dbContext.Set<Attraction>().FirstOrDefaultAsync(attraction => attraction.Id == id, cancellationToken);
-        }
-
-        /// <inheritdoc/>
-        public async Task<int> AddEntity(Attraction aggregateRoot, CancellationToken cancellationToken = default)
-        {
-            await _dbContext.Set<Attraction>().AddAsync(aggregateRoot, cancellationToken);
-
-            return await _dbContext.SaveChangesAsync(cancellationToken);
         }
     }
 }
